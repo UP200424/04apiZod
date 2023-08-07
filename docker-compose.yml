@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  mysqldb:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123
+      - MYSQL_DATABASE=mexico
+      - MYSQL_USER=upxxx-rl
+      - MYSQL_PASSWORD=123
+    ports:
+      - "5003:3306"
+    volumes:
+      - db:/var/lib/mysql
+  api:
+    build: .
+    depends_on: 
+      - mysqldb
+    links:
+      - mysqldb
+    ports:
+      - "3000:3000"
+    environment:
+      - PORT=3000
+      - DB_HOST=mysqldb
+      - DB_PORT=3306
+      - DB_DATABASE=mexico
+      - DB_USER=root
+      - SECRET=whyamisurprised
+      - DB_PASS=123
+volumes: 
+  db:
